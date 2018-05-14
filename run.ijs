@@ -2,7 +2,8 @@ load 'regex'
 load '~Projects/Gedcom/init.ijs'
 NB.data=: fread 'c:\Users\Thomas\Downloads\HickeyFamilyTree.ged'
 NB.data=: fread 'c:\Users\Thomas\Downloads\Hickey-Cherney-Family-Tree.ged'
-data =: fread '~user/projects/Gedcom/samples/Hickey-CherneyFamilyTree2018.02.09.ged'
+NB.data =: fread '~user/projects/Gedcom/samples/Hickey-CherneyFamilyTree2018.02.09.ged'
+data =: fread '~user/projects/Gedcom/samples/donmouth.ged'
 NB. data=: fread 'd:\Family\Legacy\test1000.ged'
 NB.data=: fread 'd:\Family\Legacy\Hickey-Cherney_Family_Tree_20170410.ged'
 NB. data =: fread 'd:\Family\Legacy\DannerHickeyMerge.ged'
@@ -16,15 +17,16 @@ patc =: rxcomp '^([[:digit:]+]) (@[^@]+@ |)([[:alnum:]_]+) *(.*$|)'
 parseGED =: monad : 0
 	'ptrs tags vals' =. '';'';''
 	levs =. 0$0
+	lineCount =. 0
 	for_line. y do.
-		lineCount =. >: lineCount 
-		NB.ubline =. >line
+		lineCount =. >: lineCount
 		m =. patc rxmatch >line
 		'all lev ptr tag val' =. m rxfrom >line
 		levs =. levs, ".>lev
 		ptrs =. ptrs, ptr, LF
 		tags =. tags, tag, LF
 		vals =. vals, val, LF
+		NB. if.lineCount=58 do.smoutput lineCount;line;lev;ptr;tag;val end.
 	end.
 	levs;((<;._2)ptrs);((<;._2)tags);<(<;._2)vals
 )
@@ -36,8 +38,8 @@ names =. (tags=<'NAME') #vals
 NB. Top level lbines
 lev0x =: ('0' = 0{"1>blines)
 lev0blines =: lev0x # blines
-lev0ms =: lev0x # ms
-lev0startlength =:   (< (<a:), (< 3)) { lev0ms  NB.  tag pos,length
-   starts =. {."1 lev0startlength
-   lengths =. }."1 lev0startlength
-NB. nub of tags: ~:tags
+NB. lev0ms =: lev0x # ms
+NB. lev0startlength =:   (< (<a:), (< 3)) { lev0ms  NB.  tag pos,length
+NB.    starts =. {."1 lev0startlength
+NB.    lengths =. }."1 lev0startlength
+smoutput (#~.tags); 'Different tags found'
