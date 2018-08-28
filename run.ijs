@@ -1,10 +1,6 @@
 load 'regex'
 load '~Projects/gedcom/init.ijs'
-NB. data=: fread 'c:\Users\Thomas\Downloads\HickeyFamilyTree.ged'
-NB. data=: fread 'c:\Users\Thomas\Downloads\Hickey-Cherney-Family-Tree.ged'
-NB. data=: fread 'd:\Family\Legacy\test1000.ged'
-NB. data=: fread 'd:\Family\Legacy\Hickey-Cherney_Family_Tree_20170410.ged'
-NB. data =: fread 'd:\Family\Legacy\DannerHickeyMerge.ged'
+
 AncData1 =: (<;._2) toJ stripBOM fread jpath'~user/projects/Gedcom/samples/H-C 20180827.ged'
 AncData2 =: (<;._2) toJ stripBOM fread jpath'~user/projects/Gedcom/samples/Butler_Sandleman_THickey.ged'
 
