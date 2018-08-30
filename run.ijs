@@ -22,9 +22,9 @@ parseGED =: monad : 0
 	levs;((<;._2)ptrs);((<;._2)tags);<(<;._2)vals
 )
 
-matchGED =: dyad : 0
-	'xlevs xptrs xtags xvals' =. parseGED x
-	'ylevs yptrs ytags yvals' =. parseGED y
+matchParsed =: dyad : 0
+	'xlevs xptrs xtags xvals' =. x
+	'ylevs yptrs ytags yvals' =. y
 	smoutput 'found'; (+/~:xtags);'xtags'
 	smoutput 'and  '; (+/~:ytags);'ytags'
 	xnames =. (xtags=<'NAME') # xvals
@@ -35,12 +35,9 @@ matchGED =: dyad : 0
 	smoutput (+/exact<#xnames); 'exact matches'
 )
 
-
-AncData1 matchGED AncData2
-
-
 'levs1 ptrs1 tags1 vals1' =. [parsed1 =. parseGED AncData1
 'levs2 ptrs2 tags2 vals2' =. [parsed2 =. parseGED AncData2
+parsed1 matchParsed parsed2
 
 names1 =. (tags1=<'NAME') #vals1
 names2 =. (tags2=<'NAME') #vals2
