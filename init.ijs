@@ -6,3 +6,5 @@ stripBOM =: monad : 0
 	y
 )
 maxTagLen =: 8
+
+bxdlt =: 3 : '< (#~ ([: (+./\ *. +./\.) '' ''&~:)) y'
