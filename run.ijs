@@ -6,7 +6,7 @@ AncData2 =: (<;._2) toJ stripBOM fread jpath'~user/projects/Gedcom/samples/Butle
 
 patc =: rxcomp '^([[:digit:]+]) (@[^@]+@ |)([[:alnum:]_]+) *(.*$|)'
 
-parseGED =: monad : 0
+parseGED =: 3 : 0
 	'lvevs ptrs tags vals' =. '';'';'';''
 	NB.levs =. 0$0
 	for_line. y do. NB. split data into boxed lines
@@ -25,7 +25,7 @@ parseGED =: monad : 0
 'levs1 ptrs1 tags1 vals1' =. [parsed1 =. parseGED AncData1
 'levs2 ptrs2 tags2 vals2' =. [parsed2 =. parseGED AncData2
 
-matchParsed =: dyad : 0
+matchParsed =: 4 : 0
 	'xlevs xptrs xtags xvals' =. x
 	'ylevs yptrs ytags yvals' =. y
 	smoutput 'found'; (+/~:xtags);'xtags'
@@ -34,17 +34,17 @@ matchParsed =: dyad : 0
 	ynames =. (ytags=<'NAME') # yvals
 	smoutput (#xnames); 'xnames'
 	smoutput (#ynames); 'ynames'
-	exact =: xnames i. ynames
+	exact =: xnames i. ynames NB. pos of yname in xnames
 	smoutput (+/exact<#xnames); 'exact matches'
 	xlcnames =. bxdlt"1 tolower >xnames
-	smoutput 'xlcnames';2{.xlcnames
 	ylcnames =. bxdlt"1 tolower >ynames
-	smoutput 'xlcnames';10{.xlcnames
-	smoutput 'ylcnames';10{.ylcnames
-	lcexact =: xlcnames i. ylcnames
-	smoutput (+/lcexact<#xnames); 'lc exact matches'
-	smoutput '#lcexact';#lcexact
-	smoutput 'lcmatches'; lcexact # ynames
+	xlcexact =: xlcnames i. ylcnames  NB. pos ylcname in xlcnames
+	smoutput 'xlc exact matches'; (+/xlcexact<#xnames)
+	smoutput 'xlcmatches'; 15{./:~((xlcexact<#xnames) # xlcexact) { xnames
+	ylcexact =: ylcnames i. xlcnames  NB. pos xlcname in ylcnames
+	smoutput (+/ylcexact<#ynames); 'ylc exact matches'
+	smoutput '#ylcexact';#ylcexact
+	smoutput 'ylcmatches'; 15{./:~((ylcexact<#ynames) # ylcexact) { ynames
 )
 
 parsed1 matchParsed parsed2
